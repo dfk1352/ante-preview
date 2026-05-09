@@ -117,14 +117,27 @@ ante gateway --config ./channels.json --output-format human
 ## `ante update`
 
 ```bash
-ante update [OPTIONS]
+ante update [OPTIONS] [CHANNEL]
 ```
 
-The update command checks for a newer Ante release and installs it when one is available.
+The update command checks for a newer Ante release and installs it when one is available. Without arguments, it follows the channel stored in `~/.ante/settings.json` (defaults to `stable`). Passing a channel — either as a positional argument or via `--channel` — overrides the tracked channel for this run only. See [Update & Channels](/start/update) for the full list of channels.
+
+| Argument | Description |
+|---|---|
+| `[CHANNEL]` | Release channel to update from (`stable` or `nightly`). Conflicts with `--channel`. |
 
 | Flag | Description |
 |---|---|
+| `--channel <CHANNEL>` | Release channel to update from. Equivalent to the positional form. |
 | `-h`, `--help` | Print command help. |
+
+### Examples
+
+```bash
+ante update
+ante update nightly
+ante update --channel stable
+```
 
 ## Output Formats
 
