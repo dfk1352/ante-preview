@@ -53,27 +53,21 @@ See [Preferences](/configuration/preference) for the full field reference and th
 
 ## `catalog.json`
 
-Adds or overrides providers and models on top of the built-in catalog. Both top-level keys are optional.
+Adds or overrides providers and models on top of the built-in catalog. Both top-level keys are optional and keyed by id: a `providers` entry whose key matches a built-in (e.g. `openai`) replaces it, a new key adds a provider, and a `models` entry patches that model's fields wherever it is defined.
 
 ```json
 {
   "providers": {
     "my-provider": {
-      "name": "my-provider",
+      "id": "my-provider",
       "display_name": "My Provider",
       "base_url": "https://api.example.com/v1",
-      "auth": { "bearer": { "env_key": "MY_PROVIDER_API_KEY" } },
-      "wire_style": "OpenAiCompatible"
+      "wire_style": "OpenAiCompatible",
+      "auth": { "bearer": { "env_key": "MY_PROVIDER_API_KEY" } }
     }
   },
   "models": {
-    "my-model": {
-      "name": "my-model",
-      "description": "Custom model",
-      "max_tokens": 32000,
-      "context_limit": 200000,
-      "thinking": "Enabled"
-    }
+    "claude-sonnet-4-6": { "thinking": "Deep", "max_tokens": 64000 }
   }
 }
 ```
@@ -83,7 +77,7 @@ Supported `thinking`: `Disabled`, `Enabled`, `Deep`, `Max`.
 
 Malformed provider or model entries are skipped individually and reported at startup. Valid entries in the same file still load.
 
-See [Providers](/configuration/providers) for catalog details and provider-specific examples.
+See [Providers](/configuration/providers#custom-catalog) for the full schema, authentication forms, and resolution rules.
 
 ## `AGENTS.md`
 

@@ -179,7 +179,7 @@ Requires a [Coding Plan subscription](https://help.aliyun.com/zh/model-studio/co
 {
   "providers": {
     "ali-coding-plan-oai": {
-      "name": "ali-coding-plan-oai",
+      "id": "ali-coding-plan-oai",
       "display_name": "Ali Coding Plan (OpenAI)",
       "base_url": "https://coding.dashscope.aliyuncs.com/v1",
       "auth": {
@@ -228,36 +228,212 @@ These specs are registered globally so you can pin them under any compatible pro
 
 ## Custom catalog
 
-Create `~/.ante/catalog.json` to add or override providers and models:
+Every provider and model Ante can use comes from a **catalog**. At startup Ante builds it in two layers: the built-in presets (everything listed above) load first, then your `~/.ante/catalog.json` is merged on top. Use the file to add a provider Ante doesn't ship, override a built-in one (different base URL, extra headers, an extra model), or tweak a model's defaults.
+
+The catalog is read once when the process starts — restart Ante to pick up edits.
+
+:::note
+`~/.ante` can be relocated with the `ANTE_HOME` environment variable; the catalog is always `$ANTE_HOME/catalog.json`.
+:::
+
+### File shape
+
+`catalog.json` has two optional top-level keys, both maps keyed by id:
+
+```json
+{
+  "providers": { /* add or override providers */ },
+  "models":    { /* override fields on existing models */ }
+}
+```
+
+A `providers` entry whose key matches a built-in (e.g. `openai`) replaces that preset; a new key adds a provider. The map key is the id you pass to `--provider`, so keep each entry's `id` equal to its key.
+
+### Providers
+
+Each entry under `providers` is a provider definition:
+
+| Field | Required | Description |
+|---|---|---|
+| `id` | ✅ | Provider id. Must match the map key (`name` is accepted as a legacy alias). This is what you pass to `--provider`. |
+| `display_name` | ✅ | Friendly name shown in the TUI. |
+| `base_url` | ✅ | API base URL. |
+| `wire_style` | ✅ | API dialect Ante speaks — `AnthropicMessage`, `OpenAiCompatible`, `OpenAiResponse`, or `Gemini`. |
+| `auth` | — | How to authenticate (see [Authentication](#authentication)). Omit for a provider that needs no key. |
+| `http_headers` | — | Extra headers sent with every request, as a string→string map. |
+| `preferred_models` | — | Models this provider serves (see [Models](#models)). An empty or omitted list makes the provider a **wildcard** that accepts any model id. |
 
 ```json
 {
   "providers": {
     "my-provider": {
-      "name": "my-provider",
+      "id": "my-provider",
       "display_name": "My Provider",
       "base_url": "https://api.example.com/v1",
+      "wire_style": "OpenAiCompatible",
       "auth": { "bearer": { "env_key": "MY_PROVIDER_API_KEY" } },
-      "wire_style": "OpenAiCompatible"
-    }
-  },
-  "models": {
-    "my-model": {
-      "name": "my-model",
-      "description": "Custom model",
-      "max_tokens": 32000,
-      "context_limit": 200000,
-      "thinking": "Enabled"
+      "http_headers": { "X-Org": "my-team" },
+      "preferred_models": [
+        {
+          "id": "my-model",
+          "description": "My fine-tuned model",
+          "max_tokens": 32000,
+          "context_limit": 200000,
+          "thinking": "Enabled"
+        }
+      ]
     }
   }
 }
 ```
 
-Supported wire styles: `AnthropicMessage`, `OpenAiCompatible`, `OpenAiResponse`, `Gemini`.
+### Authentication
 
-Supported thinking modes: `Disabled`, `Enabled`, `Deep`, `Max`.
+`auth` is a tagged object: the tag chooses where the credential goes, and the credential is either an environment variable (`env_key`) or one of Ante's built-in OAuth flows (`oauth_preset`).
 
-Malformed provider or model entries are skipped individually and shown in the startup notice. Other valid entries in the same `catalog.json` still load.
+| Form | JSON | Sends |
+|---|---|---|
+| Bearer token | `{ "bearer": { "env_key": "MY_KEY" } }` | `Authorization: Bearer <token>` |
+| Custom header | `{ "header": { "name": "x-api-key", "env_key": "MY_KEY" } }` | `<name>: <token>` |
+| Query param | `{ "query": { "name": "api_key", "env_key": "MY_KEY" } }` | `?<name>=<token>` |
+
+Swap `env_key` for `oauth_preset` to authenticate through a built-in OAuth flow (`anthropic`, `openai`, or `antix`) instead of an env var:
+
+```json
+"auth": { "bearer": { "oauth_preset": "anthropic" } }
+```
+
+A provider counts as authenticated when its credential is present — the env var is set and non-empty, or the OAuth token exists on disk. Providers with no `auth` block are always authenticated. Unauthenticated providers are skipped during auto-detection and shown last in the picker.
+
+### Models
+
+The `models` section overrides fields on a model **by id**, wherever that model is defined. Every field is optional and patches the canonical spec at resolve time; the built-in presets leave this section empty.
+
+```json
+{
+  "models": {
+    "claude-sonnet-4-6": { "thinking": "Deep", "max_tokens": 64000 }
+  }
+}
+```
+
+The same fields describe a model fully inside a provider's `preferred_models` (where `id` is required) or partially under `models` (where the map key supplies the id):
+
+| Field | Description |
+|---|---|
+| `id` | Model id. Required in `preferred_models` (`name` is accepted as a legacy alias); supplied by the map key under `models`. |
+| `display_name` | Friendly name. |
+| `description` | Short description shown in the model picker. |
+| `temperature` | Sampling temperature. |
+| `top_p` | Nucleus sampling cutoff. |
+| `top_k` | Top-k sampling cutoff. |
+| `max_tokens` | Maximum output tokens per turn. |
+| `stop_sequences` | List of strings that end generation. |
+| `context_limit` | Context window size, in tokens. |
+| `thinking` | Reasoning effort — `Disabled`, `Enabled`, `Deep`, or `Max`. |
+
+### How a model and provider are chosen
+
+When Ante resolves a model id it layers three sources, last wins:
+
+1. **Canonical spec** — the first provider (in catalog order) whose `preferred_models` lists that id. An unknown id falls back to a bare default spec.
+2. **`models` override** — your partial patch for that id, if any.
+3. **Environment overrides** — the process env vars below win over everything.
+
+Providers are matched to models too. A model declared in a provider's `preferred_models` is bound to that provider; asking a *different* provider to serve it is refused (start a new session to switch providers). Wildcard providers — those with no `preferred_models`, like `openai-compatible` and `local` — accept any model id, which is how you point Ante at an arbitrary model on an OpenAI-compatible endpoint.
+
+### Examples
+
+#### Add a hosted provider
+
+Most hosted endpoints are OpenAI-compatible. Register one with `wire_style: "OpenAiCompatible"`, point `base_url` at it, and list the models you want to appear in the picker:
+
+```json
+{
+  "providers": {
+    "together": {
+      "id": "together",
+      "display_name": "Together AI",
+      "base_url": "https://api.together.xyz/v1",
+      "wire_style": "OpenAiCompatible",
+      "auth": { "bearer": { "env_key": "TOGETHER_API_KEY" } },
+      "preferred_models": [
+        {
+          "id": "moonshotai/Kimi-K2-Instruct",
+          "description": "Kimi K2 on Together",
+          "max_tokens": 16384,
+          "context_limit": 128000,
+          "thinking": "Enabled"
+        }
+      ]
+    }
+  }
+}
+```
+
+```bash
+export TOGETHER_API_KEY="..."
+ante --provider together --model moonshotai/Kimi-K2-Instruct
+```
+
+#### Add a local provider with no auth
+
+Omit `auth` for a provider that needs no key, and leave `preferred_models` off to make it a wildcard that accepts any model id — handy for a local server like Ollama where the available models change as you pull them:
+
+```json
+{
+  "providers": {
+    "ollama": {
+      "id": "ollama",
+      "display_name": "Ollama",
+      "base_url": "http://localhost:11434/v1",
+      "wire_style": "OpenAiCompatible"
+    }
+  }
+}
+```
+
+```bash
+ante --provider ollama --model qwen2.5-coder:7b
+```
+
+#### Override model defaults
+
+The `models` section patches a model by id without redefining it. Each field you set replaces the built-in default; everything else is left alone:
+
+```json
+{
+  "models": {
+    "claude-opus-4-8": { "thinking": "Max" },
+    "claude-sonnet-4-6": { "thinking": "Deep", "max_tokens": 64000 },
+    "gpt-5.5": { "temperature": 0.2 }
+  }
+}
+```
+
+### Environment overrides
+
+These process env vars override catalog values for the session without editing the file:
+
+| Variable | Overrides |
+|---|---|
+| `MODEL_BASE_URL` | Base URL for all providers (a per-provider var like `ANTHROPIC_BASE_URL` takes precedence). |
+| `MODEL_TEMPERATURE` | `temperature` |
+| `MODEL_TOP_P` | `top_p` |
+| `MODEL_MAX_TOKENS` | `max_tokens` |
+| `MODEL_CONTEXT_LIMIT` | `context_limit` |
+| `MODEL_THINKING` | `thinking` — accepts `none`, `enabled`, `deep`, or `max` |
+
+### Error handling
+
+A bad entry doesn't sink the whole file. Ante parses `catalog.json` leniently: any provider or model entry that fails to deserialize is skipped, and the rest still load. Skipped entries are reported at startup, e.g.:
+
+```
+Skipped 1 entry in ~/.ante/catalog.json:
+  - providers.my-provider: missing field `base_url`
+```
+
+Only a file that isn't a JSON object at all is rejected outright. A missing `catalog.json` is fine — Ante just uses the built-in presets.
 
 ## Third-party & custom providers
 
