@@ -13,6 +13,10 @@ Ante stores user preferences in `~/.ante/settings.json`:
   "provider": "anthropic",
   "theme": "default",
   "policy": "default",
+  "permissions": {
+    "allow": ["Bash(npm run *)"],
+    "deny": ["Bash(rm *)"]
+  },
   "has_completed_onboarding": true,
   "channel": "stable",
   "status_line": ["model-name", "current-dir"],
@@ -35,6 +39,7 @@ Ante stores user preferences in `~/.ante/settings.json`:
 | `provider` | Default API provider |
 | `theme` | TUI color theme |
 | `policy` | Default permission policy (`default` or `yolo`) |
+| `permissions` | Persistent tool permission rules, grouped by `allow`, `ask`, and `deny` matchers (see [Permissions](/configuration/permission)) |
 | `has_completed_onboarding` | Whether the onboarding flow has been completed |
 | `channel` | Release channel `ante update` tracks (`stable` or `nightly`). Defaults to `stable`. See [Update & Channels](/start/update). |
 | `status_line` | Items to display in the TUI status line footer (see below) |

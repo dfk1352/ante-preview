@@ -208,6 +208,22 @@ See the [benchmark details](docs-site/docs/benchmarks/eval.mdx) across 20 parall
 </details>
 
 <details>
+<summary><b>What's your advantage over similar projects?</b></summary>
+
+Most projects in this space are written in TypeScript or Python and carry heavy runtime dependencies (Node.js, CPython). In practice that usually means an order-of-magnitude larger resource footprint (often ~10×).
+
+We genuinely mean it when we say the agent should be self-contained:
+
+- Core components like `ripgrep` and `git` are **embedded into the same binary** (still ~15MB) and run **in the same process** at runtime — not shelled out to system tools.
+- We've built our own inference engine from the ground up. (See [nanochat-rs](https://github.com/AntigmaLabs/nanochat-rs), a toy version of the kind of work that goes into it.)
+- There's an opt-in, fully integrated server-side experience at [antix.antigma.ai](https://antix.antigma.ai).
+- And much more in the pipeline — including a multi-agent platform.
+
+Beyond the footprint, it comes down to agent architecture, and ultimately to *who* is building it and with what philosophy. Those differences in taste and engineering rigor leak into every aspect of the product. It's hard to gauge quality when it's so easy to fork and clone something — so on that front, probably only time can tell.
+
+</details>
+
+<details>
 <summary><b>Why care about runtime optimization like memory and I/O if model inference is usually the biggest bottleneck?</b></summary>
 
 For one-on-one agent interactions, runtime overhead like memory usage and I/O is often less important than model inference.
