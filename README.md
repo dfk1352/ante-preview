@@ -214,7 +214,7 @@ Most projects in this space are written in TypeScript or Python and carry heavy 
 
 We genuinely mean it when we say the agent should be self-contained:
 
-- Core components like `ripgrep` and `git` are **embedded into the same binary** (still ~15MB) and run **in the same process** at runtime — not shelled out to system tools.
+- Core components like `Grep` is a fully rebuilt and customized and `git` are **embedded into the same binary** (while maintaining ~15MB size) and run **in the same process** at runtime — not shelled out to exterinal processes to prevent accidental resource leakage.
 - We've built our own inference engine from the ground up. (See [nanochat-rs](https://github.com/AntigmaLabs/nanochat-rs), a toy version of the kind of work that goes into it.)
 - There's an opt-in, fully integrated server-side experience at [antix.antigma.ai](https://antix.antigma.ai).
 - And much more in the pipeline — including a multi-agent platform.
