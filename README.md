@@ -25,8 +25,8 @@ Most agents ship a Node or Python runtime and a tree of dependencies — fine fo
 
 ## Key Features
 
-- **Lightweight agent core** — ~15MB binary, zero dependencies. Built for minimal overhead and maximum throughput.
-- **Native local models** — Built-in local inference integration. No API keys, no internet, no data leaving your device.
+- **Rock-solid optimized agent core** — A meticulously engineered core — runtime, scheduler, and built-in toolset — in ~15MB of native Rust with zero dependencies. Built for minimal overhead and maximum throughput.
+- **Native local models** — Built-in local inference. No API keys, no internet, no data leaving your device.
 - **Zero vendor lock-in** — Bring your own API key or local model. Switch between 12+ providers freely. No account required.
 - **Client-daemon architecture** — Run as an interactive TUI, headless CLI, or long-lived server (`ante serve`).
 - **Channel integrations** — Run Ante as a Slack or Discord bot with `ante gateway`.
@@ -41,7 +41,7 @@ Most agents ship a Node or Python runtime and a tree of dependencies — fine fo
 
 ## Performance
 
-Ante is designed for the **cellular-native** thesis: agents lightweight enough to run hundreds of replicas in parallel on a single machine. Its ~15MB Rust core uses a fraction of the memory, CPU, and disk I/O of comparable agents — making mass parallelism practical without specialized infrastructure.
+Mass parallelism only pays off if a single agent is cheap enough to multiply. Ante's ~15MB Rust core uses a fraction of the memory, CPU, and disk I/O of comparable agents — making it practical without specialized infrastructure.
 
 Docker resource usage across 20 parallel tasks (Ante vs Claude Code vs Opencode):
 
