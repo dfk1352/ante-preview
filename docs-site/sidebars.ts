@@ -66,6 +66,7 @@ const sidebars: SidebarsConfig = {
         'reference/storage-reference',
       ],
     },
+    'changelog',
   ],
   antix: [
     {
