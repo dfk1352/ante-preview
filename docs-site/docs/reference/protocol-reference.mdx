@@ -18,7 +18,7 @@ Every operation is wrapped in an `OpMsg`:
 
 ```json
 {
-  "op": { "StartSession": { "model": "claude-sonnet-4-6", "provider": "anthropic", "streaming": true } },
+  "op": { "StartSession": { "model": "claude-sonnet-4-6", "provider": "anthropic" } },
   "id": "op_01ARZ3NDEKTSV4RRFFQ69G5FAV"
 }
 ```
@@ -64,7 +64,6 @@ Initialize a new session with model, provider, and configuration.
       "model": "claude-sonnet-4-6",
       "provider": "anthropic",
       "policy": null,
-      "streaming": true,
       "system_prompt": null,
       "append_system_prompt": null,
       "allowed_tools": null,
@@ -84,7 +83,6 @@ Initialize a new session with model, provider, and configuration.
 | `model` | `string` | Model name (e.g. `"claude-sonnet-4-6"`) |
 | `provider` | `string` | Provider name (e.g. `"anthropic"`, `"openai"`, `"gemini"`, `"xai"`, `"openrouter"`, `"local"`) |
 | `policy` | `PermissionMode?` | Tool approval policy. `null` uses default |
-| `streaming` | `bool` | Enable streaming deltas (`MessageDelta`, `ThinkingDelta`) |
 | `system_prompt` | `string?` | Override the default system prompt entirely |
 | `append_system_prompt` | `string?` | Append content to the default system prompt |
 | `allowed_tools` | `string[]?` | Whitelist — only these tools are available |

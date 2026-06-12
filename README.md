@@ -23,7 +23,7 @@ Today it's the lightest, fastest terminal agent you can run: bring your own key,
 >
 > **Documentation is the new source code.**
 
-Most agents ship a Node or Python runtime and a tree of dependencies — fine for a single chat, ruinous when you want a hundred running at once. Ante is hand-written Rust with the heavy parts — `Grep`, `git`, and local inference — embedded in the same binary and run in the same process. The result: **~7× less memory** than Claude Code across 20 parallel tasks, **#1 on the public [Terminal Bench](docs-site/docs/benchmarks/eval.mdx) 1.0 leaderboard**, and a deliberate resistance to AI-generated slop.
+Most agents ship a Node or Python runtime and a tree of dependencies — fine for a single chat, ruinous when you want a hundred running at once. Ante is hand-written Rust with the heavy parts — `Grep`, `git`, and local inference — embedded in the same binary and run in the same process. The result: **~7× less memory** than Claude Code across 20 parallel tasks and a deliberate resistance to AI-generated slop.
 
 ## Key Features
 
@@ -37,8 +37,8 @@ Most agents ship a Node or Python runtime and a tree of dependencies — fine fo
 
 > [!NOTE]
 > **Benchmark proven.** Public, [reproducible evals](https://docs.antigma.ai/benchmarks/eval) on user-facing builds.
-> - 🥇 #1 on **Terminal Bench 1.0**
-> - 🥇 #1 on **Terminal Bench 2.0** (verified agent)
+> - 🥇 Topped **Terminal Bench 2.0** (verified agent)
+> - 🥇 Topped **Terminal Bench 1.0**
 > - More to come
 
 ## Performance

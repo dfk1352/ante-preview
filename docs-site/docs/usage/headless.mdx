@@ -112,9 +112,10 @@ In headless mode, Ante automatically appends the current directory's folder stru
 
 ## Headless behavior notes
 
-- **Streaming is disabled** — Responses are buffered for cleaner output
+- **Raw streaming deltas are suppressed** — Output shows complete messages, not the incremental chunks, so logs stay clean
 - **Yolo policy is implied** — All tool calls are auto-approved (no interactive prompts)
 - **Authentication is checked eagerly** — If the provider isn't authenticated, Ante exits immediately with an error
+- **Fails fast if the daemon dies** — If the agent process exits before finishing the task, Ante reports an error instead of a success exit code
 
 ## Resuming a session
 
