@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.preview.38 - 2026-06-12
+
+- Always stream responses end to end and retire the session streaming flag; suppress raw deltas in headless output
+- Harden Bash safety classifiers
+- Add a command-based status line to the TUI (Claude Code-compatible)
+- Suggest a starter prompt and highlight slash commands on a fresh session
+- Handle terminal stop reasons before retrying empty responses
+- Fix OAuth refresh token response parsing
+- Harden WebFetch against binary responses
+- Fail fast in headless mode when the daemon dies, and explain the stdin EOF wait
+- Extend the typed LLM error taxonomy through streaming and provider error classification
+- Rework the session/turn lifecycle with explicit states and symmetric exits
+- Dependency updates
+
 ## v0.preview.37 - 2026-06-10
 
 - Update the Anthropic model catalog for the latest Claude models
