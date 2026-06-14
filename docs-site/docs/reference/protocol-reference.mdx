@@ -82,7 +82,7 @@ Initialize a new session with model, provider, and configuration.
 |---|---|---|
 | `model` | `string` | Model name (e.g. `"claude-sonnet-4-6"`) |
 | `provider` | `string` | Provider name (e.g. `"anthropic"`, `"openai"`, `"gemini"`, `"xai"`, `"openrouter"`, `"local"`) |
-| `policy` | `PermissionMode?` | Tool approval policy. `null` uses default |
+| `policy` | `PermissionMode?` | Tool approval policy: `"default"`, `"auto"`, or `"yolo"`. `null` uses default |
 | `system_prompt` | `string?` | Override the default system prompt entirely |
 | `append_system_prompt` | `string?` | Append content to the default system prompt |
 | `allowed_tools` | `string[]?` | Whitelist — only these tools are available |
@@ -494,10 +494,17 @@ Each entry in `mcp_servers` reflects what was actually launched and discovered: 
 
 #### UsageUpdate
 
-Token usage statistics for the session.
+Token usage statistics for the session. `context` is omitted before the first response or when the model context limit is unknown.
 
 ```json
-{ "event": { "UsageUpdate": { "usage": { "input_tokens": 1500, "output_tokens": 300 } } } }
+{
+  "event": {
+    "UsageUpdate": {
+      "usage": { "input_tokens": 1500, "output_tokens": 300 },
+      "context": { "used_tokens": 1800, "limit_tokens": 200000, "pct_left": 99 }
+    }
+  }
+}
 ```
 
 #### Info
