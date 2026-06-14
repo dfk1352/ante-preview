@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.preview.39 - 2026-06-14
+
+- Add layered permission configuration with an Auto mode and hardened settings handling
+- Stop wildcard permission rules from matching across sequence stages
+- Add a context-window-left metric to the TUI status line
+- Surface a startup notice when settings fail to parse instead of silently ignoring them
+- Add new antix OAuth models
+- Update the model catalog for Anthropic, OpenRouter, and ZAI, and add MiniMax M3 on OpenRouter
+- Stop orphaned subagent turns when a turn is interrupted
+- Classify in-stream OpenAI-compatible error events instead of failing opaquely
+- Improve OpenRouter error detail handling
+- Fix OpenRouter DeepSeek max thinking effort
+
 ## v0.preview.38 - 2026-06-12
 
 - Always stream responses end to end and retire the session streaming flag; suppress raw deltas in headless output
