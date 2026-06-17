@@ -12,7 +12,7 @@ Ante stores user preferences in `~/.ante/settings.json`:
   "model": "claude-sonnet-4-6",
   "provider": "anthropic",
   "theme": "default",
-  "policy": "auto",
+  "permission_mode": "auto",
   "permissions": {
     "allow": ["Bash(npm run *)"],
     "deny": ["Bash(rm *)"]
@@ -43,7 +43,7 @@ Ante stores user preferences in `~/.ante/settings.json`:
 | `model` | Default model name |
 | `provider` | Default API provider |
 | `theme` | TUI color theme |
-| `policy` | Default permission policy (`default`, `auto`, or `yolo`) |
+| `permission_mode` | Default permission mode (`strict`, `auto`, or `yolo`). Unrecognized values are ignored rather than failing the whole file |
 | `permissions` | Persistent tool permission rules, grouped by `allow`, `ask`, and `deny` matchers (see [Permissions](/configuration/permission)) |
 | `has_completed_onboarding` | Whether the onboarding flow has been completed |
 | `channel` | Release channel `ante update` tracks (`stable` or `nightly`). Defaults to `stable`; legacy `latest` values are treated as `stable`. See [Update & Channels](/start/update). |
@@ -64,7 +64,7 @@ The `status_line` field controls which items appear in the TUI's footer bar. It 
 | `git-branch` | Current Git branch (omitted when unavailable) |
 | `thinking-level` | Current thinking level (omitted when disabled) |
 | `pr-link` | GitHub pull request link for the current branch (requires `gh`) |
-| `context-left` | Percent of the usable context window remaining (omitted until known) |
+| `context-used` | Context-window usage, shown as `N% ctx` of the window remaining (omitted until known) |
 
 Default: `["model-name", "current-dir"]`. Configure via `~/.ante/settings.json` or the `/statusline` command in the TUI.
 
@@ -103,7 +103,7 @@ The JSON input is a compatible subset of [Claude Code's statusline input](https:
   "workspace": { "current_dir": "/work/repo", "project_dir": "/work/repo" },
   "thinking": { "enabled": true },
   "pr": { "number": 7, "url": "https://github.com/..." },
-  "context": { "pct_left": 82, "used_tokens": 36000, "limit_tokens": 200000 },
+  "context": { "pct_used": 18, "used_tokens": 36000, "limit_tokens": 200000 },
   "provider": "anthropic"
 }
 ```

@@ -40,11 +40,8 @@ Each provider ships a set of `preferred_models` — the ids that appear in the m
 | Model | Description | Context |
 |---|---|---|
 | `claude-haiku-4-5` | Fast and capable | 200K |
-| `claude-sonnet-4-5` | Fast and capable | 200K |
-| `claude-sonnet-4-6` | Fast and capable | 200K |
-| `claude-opus-4-6` | Most capable, slower | 200K |
-| `claude-opus-4-7` | Most capable, slower | 200K |
-| `claude-opus-4-8` | Most capable, slower | 200K |
+| `claude-sonnet-4-6` | Fast and capable | 1M |
+| `claude-opus-4-8` | Most capable, slower | 1M |
 
 ```bash
 ante --provider anthropic --model claude-sonnet-4-6
@@ -66,7 +63,7 @@ ante --provider anthropic --model claude-sonnet-4-6
 ante --provider openai --model gpt-5.5
 ```
 
-The `openai-subscription` provider (ChatGPT/Codex OAuth) serves `gpt-5.5`, `gpt-5.4`, and `gpt-5.3-codex`.
+The `openai-subscription` provider (ChatGPT/Codex OAuth) serves only `gpt-5.5` — the other GPT-5 ids aren't available on ChatGPT accounts.
 
 #### OpenAI transports
 
@@ -125,10 +122,11 @@ ante --provider xai --model grok-4-latest
 
 | Model | Description | Context |
 |---|---|---|
+| `glm-5.2` | Latest GLM-5.2 model | 1M |
 | `glm-5.1` | GLM-5.1 model | 200K |
 
 ```bash
-ante --provider zai --model glm-5.1
+ante --provider zai --model glm-5.2
 ```
 
 ### Open Router
@@ -206,12 +204,16 @@ Requires a [Coding Plan subscription](https://help.aliyun.com/zh/model-studio/co
 
 | Model | Description | Context |
 |---|---|---|
-| `gemini-3.5-flash` | Gemini 3.5 Flash | 1M |
-| `qwen3.6-plus` | Latest Qwen 3.6 Plus | 1M |
+| `gemini-3.5-flash` | Gemini 3.5 Flash, agentic workflows | 1M |
+| `qwen3.7-max` | Latest Qwen 3.7 Max | 1M |
+| `qwen3.7-plus` | Latest Qwen 3.7 Plus | 1M |
 | `gemini-3.1-pro-preview` | Gemini 3.1 Pro with deep thinking | 1M |
 | `claude-haiku-4-5` | Fast and capable | 200K |
 | `claude-sonnet-4-6` | Fast and capable | 200K |
-| `gpt-5.4` | Latest model powering Codex | — |
+| `claude-opus-4-8` | Most capable, slower | 200K |
+| `gpt-5.5` | Latest flagship GPT model | — |
+| `gpt-5.5-pro` | Highest reliability on complex problems | — |
+| `gpt-5.4` | Latest model powering Codex and Codex CLI | — |
 | `gpt-5.3-codex` | Coding-optimized Codex model | — |
 | `deepseek-v4-flash` | Fast DeepSeek V4 Flash | 1M |
 | `deepseek-v4-pro` | DeepSeek V4 Pro with deep thinking | 1M |
