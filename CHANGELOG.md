@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.preview.41 - 2026-06-17
+
+- Rename persisted permission settings to the Claude-style `permissions` key and drop the legacy `permission_settings` alias
+- Scope permission rules to known primary tool args (Bash, Agent, Read, Edit) and render TUI tool-call args as the primary value when known
+
 ## v0.preview.40 - 2026-06-16
 
 - Add scoped session permission grants with a subsumption algebra, collapsing batched approval prompts by re-evaluating them against already-granted scopes
