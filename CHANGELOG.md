@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.preview.40 - 2026-06-16
+
+- Add scoped session permission grants with a subsumption algebra, collapsing batched approval prompts by re-evaluating them against already-granted scopes
+- Cycle permission modes with Shift+Tab
+- Rename the `Default` permission mode to `Strict` and drive permission mode through settings and the protocol
+- Rework turn interrupt and steer keys: Ctrl-C interrupts, Ctrl-S steers, and Esc is contextual and also interrupts an active turn
+- Keep the active turn alive across a session or model update
+- Show a live "still working" timer for quiet long-running tools
+- Report context usage as percent used in the status line
+- Cap compaction output by the remaining context window
+- Harden the safe-command classifier for `date`, `file`, `tree`, and abbreviated git options
+- Fix conservative model token budgets
+- Remove unsupported OpenAI subscription models
+- Remove the leading slash glyph from the empty input prompt
+
 ## v0.preview.39 - 2026-06-14
 
 - Add layered permission configuration with an Auto mode and hardened settings handling
