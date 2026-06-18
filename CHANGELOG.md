@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.preview.42 - 2026-06-18
+
+- Add an `ante doctor` command and speed up startup by decoupling TUI session start
+- Remove the global Ctrl-D TUI exit shortcut
+- Show the Shift+Tab cycle hint in the custom status-line footer
+- Guard background bash commands against trailing ampersands
+- Clean up the offline installer config and release build workflows
+- Dependency updates
+
 ## v0.preview.41 - 2026-06-17
 
 - Rename persisted permission settings to the Claude-style `permissions` key and drop the legacy `permission_settings` alias
