@@ -19,6 +19,7 @@ ante [OPTIONS] [COMMAND]
 | `ante update` | Check for the latest Ante release and install it if available. |
 | `ante rage` | Collect a redacted bug-report bundle (logs + environment) to share with the Ante team. |
 | `ante catalog` | Print the loaded provider/model catalog as JSON. |
+| `ante doctor` | Run a boot-time self-check and report startup phase timings. |
 
 ## `ante`
 
@@ -187,6 +188,23 @@ Print the merged provider/model catalog (built-in presets plus `~/.ante/catalog.
 ```bash
 ante catalog
 ante catalog | jq '.providers | keys'
+```
+
+## `ante doctor`
+
+```bash
+ante doctor
+```
+
+Boot the same runtime a real launch uses — load the merged catalog, start a daemon session, and render the first TUI frame — then print a readiness report with per-phase timings. Use it to confirm Ante is installed and configured correctly, or as a CI smoke test ("does Ante boot, does the first frame render").
+
+It needs no TTY and no API key: MCP warm-up is skipped and the session reaches readiness from the catalog alone. The report lists three checks — `catalog` (provider/model counts), `session` (the resolved `provider/model`), and `first frame` (the headless render) — followed by a total. Warnings (such as no authenticated provider, or a skipped catalog entry) are listed below the table without failing the check. `doctor` exits non-zero if any hard check fails, so it works in scripts.
+
+### Examples
+
+```bash
+ante doctor
+ante doctor || echo "ante is not healthy"
 ```
 
 ## Output Formats

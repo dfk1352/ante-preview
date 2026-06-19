@@ -31,7 +31,7 @@ Search file contents with regular expressions.
 
 ### Bash
 
-Execute shell commands. Each call runs in a fresh non-interactive process — shell state does not persist between calls. Long-running commands (servers, watchers, slow builds) can be launched in the background; the agent gets back paths it can read for status and output, and can stop the process by its pid. Requires approval.
+Execute shell commands. Each call runs in a fresh non-interactive process — shell state does not persist between calls. Long-running commands (servers, watchers, slow builds) can be launched in the background; the agent gets back paths it can read for status and output, and can stop the process by its pid. A trailing `&` on a background command is redundant and is stripped automatically. Requires approval.
 
 ## Builtin
 
