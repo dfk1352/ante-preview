@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.preview.43 - 2026-06-20
+
+- Add an opt-in auto-memory prompt that teaches the agent to record and recall typed memories across sessions
+- Add OpenRouter GLM 5.2 to the model catalog
+- Clarify max-output-token truncation handling
+- Preserve partially streamed content when a mid-stream error occurs
+- Validate model token budgets when loading the catalog
+- Make tool approval bookkeeping non-fatal
+- Simplify OpenAI-compatible profile policies
+- Tighten the headless check prompt
+- Detect updater installer download failures
+
 ## v0.preview.42 - 2026-06-18
 
 - Add an `ante doctor` command and speed up startup by decoupling TUI session start
