@@ -9,6 +9,8 @@ Ante has a persistent memory system that lets the agent build up knowledge acros
 
 Each project has a memory directory at `~/.ante/projects/<project-id>/memory/`, where `<project-id>` is a sanitized form of the project's absolute path. The key file is `MEMORY.md` — its contents are injected into the system prompt at the start of every conversation.
 
+Auto-memory is enabled by default in the interactive TUI and disabled by default in headless `-p` runs. Use `--enable-auto-memory` to opt a headless run into memory, or `--disable-auto-memory` to turn it off for a TUI session.
+
 ### Automatic behavior
 
 As the agent works on your project, it:
