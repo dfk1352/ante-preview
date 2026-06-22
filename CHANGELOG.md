@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.preview.44 - 2026-06-22
+
+- Add readline-style line editing with undo/redo to the chat composer
+- Add bash mode (!cmd) for running shell commands inline
+- Make the status line Claude Code-compatible, show the raw context window, and refresh its defaults
+- Lay groundwork for offline mode with a self-contained TUI
+- Make ante-guide read docs from the ante-preview repo checkout
+- Improve auto-memory tool labels in the TUI
+- Handle malformed tool-call arguments cleanly
+- Read the subagent report from the last model message
+- Allow up to 3 max-token continuations per episode
+- Charge model-call usage once per step
+- Restructure the turn model-step loop for readability
+
 ## v0.preview.43 - 2026-06-20
 
 - Add an opt-in auto-memory prompt that teaches the agent to record and recall typed memories across sessions
