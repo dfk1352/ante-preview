@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.preview.45 - 2026-06-25
+
+- Add MiMo models via OpenRouter
+- Select flash and default models automatically by weight class (feather/middle/heavy)
+- Infer model vision support from model markers, and return image metadata from Read when the model lacks vision
+- Make native web search a declarative provider flag
+- Rework bash mode to run in the user's shell and reuse the shared crates/exec path
+- Surface settings parse notices in `ante doctor`
+- Dependency updates
+
 ## v0.preview.44 - 2026-06-22
 
 - Add readline-style line editing with undo/redo to the chat composer
