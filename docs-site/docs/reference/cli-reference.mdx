@@ -46,7 +46,7 @@ Without `--prompt`, Ante starts the interactive TUI. With `--prompt`, Ante runs 
 | `--check` | Run a verification pass after the headless task completes. |
 | `-r`, `--resume <SESSION_ID>` | Resume a previous session by ID. |
 | `--offline-model <PATH>` | Path to a local GGUF model file for offline inference. |
-| `--simple-agent` | Use the built-in simple agent prompt with `PTY`, `ImageRead`, and `WebSearch` tools. |
+| `--simple-agent` | Use the built-in simple agent prompt with `PTY`, `ViewImage`, and `WebSearch` tools. |
 | `-h`, `--help` | Print command help. |
 | `-V`, `--version` | Print the Ante version. |
 
@@ -201,7 +201,7 @@ ante doctor
 
 Boot the same runtime a real launch uses — load the merged catalog, start a daemon session, and render the first TUI frame — then print a readiness report with per-phase timings. Use it to confirm Ante is installed and configured correctly, or as a CI smoke test ("does Ante boot, does the first frame render").
 
-It needs no TTY and no API key: MCP warm-up is skipped and the session reaches readiness from the catalog alone. The report lists three checks — `catalog` (provider/model counts), `session` (the resolved `provider/model`), and `first frame` (the headless render) — followed by a total. Warnings (such as no authenticated provider, or a skipped catalog entry) are listed below the table without failing the check. `doctor` exits non-zero if any hard check fails, so it works in scripts.
+It needs no TTY and no API key: MCP warm-up is skipped and the session reaches readiness from the catalog alone. The report lists three checks — `catalog` (provider/model counts), `session` (the resolved `provider/model`), and `first frame` (the headless render) — followed by a total. Warnings (such as no authenticated provider, a skipped catalog entry, or a `settings.json` parse notice) are listed below the table without failing the check. `doctor` exits non-zero if any hard check fails, so it works in scripts.
 
 ### Examples
 

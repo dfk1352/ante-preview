@@ -95,7 +95,7 @@ You can also resume from the CLI with `ante --resume <SESSION_ID>` (or `-r`) in 
 
 | Key | Action |
 |---|---|
-| `Enter` | Send message |
+| `Enter` | Send message (or run a shell command in [bash mode](#bash-mode) if the line starts with `!`) |
 | `Ctrl+Enter` / `Alt+Enter` / `Shift+Enter` | Insert newline |
 | `Up` / `Down` | Move cursor, then navigate history |
 | `Tab` | Complete command or file path suggestion |
@@ -103,7 +103,27 @@ You can also resume from the CLI with `ante --resume <SESSION_ID>` (or `-r`) in 
 | `Ctrl+R` | Start reverse-i-search through prompt history |
 | `Ctrl+C` | Interrupt the active turn; press twice in a row to exit (or use `/exit`, `exit`, `quit`) |
 | `Ctrl+S` | Steer queued messages into the running turn |
+| `Ctrl+V` | Paste text or an image from the clipboard |
 | `Escape` | Close a popup, or interrupt the active turn when none is open |
+
+### Line editing
+
+The composer supports readline-style editing with multi-step undo/redo:
+
+| Key | Action |
+|---|---|
+| `Ctrl+A` / `Home` | Jump to start of line |
+| `Ctrl+E` / `End` | Jump to end of line |
+| `Alt+B` / `Ctrl+←` | Move to previous word |
+| `Alt+F` / `Ctrl+→` | Move to next word |
+| `Ctrl+W` / `Alt+Backspace` | Delete the previous word |
+| `Alt+D` | Delete the next word |
+| `Ctrl+D` | Delete the character under the cursor |
+| `Ctrl+K` | Kill (cut) from the cursor to end of line |
+| `Ctrl+U` | Kill (cut) from the start of line to the cursor |
+| `Ctrl+Y` | Yank (paste) the most recently killed text |
+| `Ctrl+Z` | Undo the last edit |
+| `Alt+Z` | Redo |
 
 ### Global shortcuts
 
@@ -152,6 +172,21 @@ Type `@` in the input to reference files or directories. A file search dropdown 
 
 :::tip
 If you paste multiple file paths, Ante auto-prefixes them with `@` for convenience.
+:::
+
+## Bash mode
+
+Prefix any input with `!` to run it directly as a shell command instead of sending it to the agent:
+
+```
+!git status
+!cargo build
+```
+
+The command runs in your own login shell (`$SHELL -lc`, falling back to `/bin/sh`) from the current working directory, with a 120-second timeout. Its output is shown in the conversation and also fed to the agent as context for the next turn, so you can run a command yourself and then ask the agent to act on what it printed.
+
+:::note
+Bash mode runs locally and is never gated by the permission system — typing `!` is the authorization. This is separate from the agent's own `Bash` tool, which still goes through tool approval. A bare `!` with nothing after it is sent as a normal message. Interactive programs (editors, pagers) won't work, since bash mode has no terminal input.
 :::
 
 ## CLI flags for TUI mode

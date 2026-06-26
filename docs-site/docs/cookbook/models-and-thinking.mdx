@@ -21,3 +21,5 @@ From this same interface you can:
 :::tip
 You can also set your default model and provider via CLI flags: `ante --provider openai --model gpt-5.5`, or configure defaults in your [preferences](/configuration/preference).
 :::
+
+If you pick a provider without naming a model, Ante starts you on that provider's most capable model and quietly uses a lighter, cheaper one for background work like summarizing fetched web pages — see [weight classes](/reference/catalog-reference#weight-classes). Vision-capable models are detected automatically, so you can drop images straight into the chat.

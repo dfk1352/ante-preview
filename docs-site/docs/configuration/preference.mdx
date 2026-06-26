@@ -103,12 +103,17 @@ The JSON input is a compatible subset of [Claude Code's statusline input](https:
   "workspace": { "current_dir": "/work/repo", "project_dir": "/work/repo" },
   "thinking": { "enabled": true },
   "pr": { "number": 7, "url": "https://github.com/..." },
-  "context": { "pct_used": 18, "used_tokens": 36000, "limit_tokens": 200000 },
-  "provider": "anthropic"
+  "provider": "anthropic",
+  "context_window": {
+    "context_window_size": 200000,
+    "total_input_tokens": 36000,
+    "used_percentage": 18,
+    "remaining_percentage": 82
+  }
 }
 ```
 
-`pr` is present only when an open pull request is detected for the current branch; `context` is present after the first response when the model's context limit is known. `provider` and `context` are Ante extensions. The command also receives `COLUMNS` and `LINES` (current terminal size) and `ANTE_PROJECT_DIR` (nearest ancestor with `.git`) in its environment.
+`pr` is present only when an open pull request is detected for the current branch; `context_window` is present after the first response when the model's context limit is known, and reports the raw window size alongside used/remaining percentages using Claude Code's field names. `provider` is an Ante extension. The command also receives `COLUMNS` and `LINES` (current terminal size) and `ANTE_PROJECT_DIR` (nearest ancestor with `.git`) in its environment.
 
 **Output.** Each line of stdout becomes a footer row (up to 8). ANSI colors and OSC 8 hyperlinks are rendered; color state carries across lines. Blank lines are dropped, and empty output renders a blank status line.
 

@@ -499,14 +499,14 @@ Each entry in `mcp_servers` reflects what was actually launched and discovered: 
 
 #### UsageUpdate
 
-Token usage statistics for the session. `context` is omitted before the first response or when the model context limit is unknown. `pct_used` is measured against the auto-compact threshold, so it can reach 100% before the raw token limit.
+Token usage statistics for the session. `context` is omitted before the first response or when the model context limit is unknown. It carries raw measurements only — `used_tokens` (cache-inclusive window occupancy) and `limit_tokens` (the raw model context limit); any percentage is derived by the client. `usage` may also include `cache_read_tokens` and `cache_creation_tokens` when the provider reports them.
 
 ```json
 {
   "event": {
     "UsageUpdate": {
       "usage": { "input_tokens": 1500, "output_tokens": 300 },
-      "context": { "used_tokens": 1800, "limit_tokens": 200000, "pct_used": 1 }
+      "context": { "used_tokens": 1800, "limit_tokens": 200000 }
     }
   }
 }

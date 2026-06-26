@@ -47,6 +47,34 @@ memory/
 └── architecture.md     # Architecture decisions
 ```
 
+## Memory types
+
+When auto-memory is on, the agent is taught to save **typed** memories — each topic file carries `name`, `description`, and `type` frontmatter so future sessions can decide what is relevant. There are four types:
+
+| Type | What it captures |
+|---|---|
+| `user` | The user's role, expertise, goals, and preferences — so explanations and defaults can be tailored to them. |
+| `feedback` | Guidance on how to work in this project, drawn from corrections and confirmations alike. Leads with the rule, then a **Why** and **How to apply** line. |
+| `project` | Ongoing work, decisions, or constraints not derivable from code or git. Same **Why** / **How to apply** structure; relative dates are stored as absolute. |
+| `reference` | Pointers to where current truth lives in external systems (a Linear project, a Grafana board, a Slack channel). |
+
+A typed topic file looks like:
+
+```markdown
+---
+name: bundle-refactors
+description: Prefer one bundled PR for refactors in this area
+type: feedback
+---
+
+For multi-file refactors here, prefer a single bundled PR over splitting.
+
+**Why:** the user confirmed it — a validated call, not a correction.
+**How to apply:** multi-file refactors touching this area.
+```
+
+The agent deliberately **does not** save secrets, in-progress task state, or anything already re-readable from the repo (code structure, file paths, conventions — those belong in `AGENTS.md`). Recalled memory is treated as background context that reflects a past moment, so the agent re-verifies any file, flag, or function a memory names before acting on it.
+
 ## Guidelines
 
 The memory system follows these principles:

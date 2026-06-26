@@ -9,7 +9,7 @@ Tools are the capabilities available to the agent during a session. Some tools r
 
 ### Read
 
-Read text files, images, and PDFs.
+Read text files, images, and PDFs. When the active model has no vision support, reading an image returns its metadata (type and dimensions) instead of the image itself, so the agent knows the file exists and can inspect it programmatically.
 
 ### Write
 
@@ -49,13 +49,13 @@ Fetch a URL, convert it to markdown, and have a small model extract what's relev
 
 ### WebSearch
 
-Search the web and return results with citations. Requires approval. Not in the default tool set — enable with `--allowed-tools`.
+Search the web and return results with citations. Requires approval. Not in the default tool set — enable with `--allowed-tools`. Uses the provider's native web search, so it only works on a provider that advertises `supports_web_search` (Anthropic, OpenAI, Gemini, Grok, OpenRouter, Antix, and Ali Coding Plan); on other providers the call returns an error.
 
 ## Opt-in tools
 
-These are not enabled by default. Turn them on with `--allowed-tools`, or use `--simple-agent` for an agent set tuned around interactive terminal work.
+These are not enabled by default. Turn them on with `--allowed-tools`, or use `--simple-agent` for an agent set (`PTY`, `ViewImage`, `WebSearch`) tuned around interactive terminal work.
 
-### ImageRead
+### ViewImage
 
 Read and analyze an image with a natural-language instruction.
 
@@ -75,7 +75,7 @@ Tools provided by configured [MCP servers](/extend/mcp) are exposed to the agent
 
 By default Ante enables `Read`, `Bash`, `Grep`, `Glob`, `TodoWrite`, `WebFetch`, `Edit`, `Write`, and `Agent`. `Browser` is also included when Ante is built with the `browser` feature.
 
-`WebSearch`, `ImageRead`, and `PTY` are opt-in.
+`WebSearch`, `ViewImage`, and `PTY` are opt-in.
 
 ## Tool filtering
 

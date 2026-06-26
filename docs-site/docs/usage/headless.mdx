@@ -55,7 +55,7 @@ ante [OPTIONS] [--prompt <PROMPT>]
 | `--disallowed-tools <TOOLS>...` | Disallow these tools (space-separated) |
 | `-r`, `--resume <SESSION_ID>` | Resume a previously saved session by its ID |
 | `--check` | Run a verification pass after the main task completes |
-| `--simple-agent` | Simple agent mode — uses a minimal system prompt with `PTY`, `ImageRead`, and `WebSearch` tools |
+| `--simple-agent` | Simple agent mode — uses a minimal system prompt with `PTY`, `ViewImage`, and `WebSearch` tools |
 | `--offline-model <PATH>` | Path to a local GGUF file. Boots a local llama-server, points the session at the `local` provider, and tears it down on exit |
 
 ## Output formats
@@ -99,7 +99,7 @@ The verification pass will:
 
 ## Simple agent mode
 
-The `--simple-agent` flag starts Ante with a minimal system prompt and a reduced tool set (`PTY`, `ImageRead`, `WebSearch`). This is useful for lightweight automation where you don't need the full coding agent:
+The `--simple-agent` flag starts Ante with a minimal system prompt and a reduced tool set (`PTY`, `ViewImage`, `WebSearch`). This is useful for lightweight automation where you don't need the full coding agent:
 
 ```bash
 ante --simple-agent -p "take a screenshot and describe what you see"
