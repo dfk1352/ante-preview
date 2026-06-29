@@ -18,6 +18,8 @@ Ante stores user preferences in `~/.ante/settings.json`:
     "deny": ["Bash(rm *)"]
   },
   "has_completed_onboarding": true,
+  "ambient_prompt_suggestion": true,
+  "ambient_thinking_phrase": true,
   "channel": "stable",
   "status_line": ["model-name", "current-dir"],
   "status_line_command": {
@@ -46,6 +48,8 @@ Ante stores user preferences in `~/.ante/settings.json`:
 | `permission_mode` | Default permission mode (`strict`, `auto`, or `yolo`). Unrecognized values are ignored rather than failing the whole file |
 | `permissions` | Persistent tool permission rules, grouped by `allow`, `ask`, and `deny` matchers (see [Permissions](/configuration/permission)) |
 | `has_completed_onboarding` | Whether the onboarding flow has been completed |
+| `ambient_prompt_suggestion` | Whether the TUI shows a [next-prompt suggestion](/usage/tui#next-prompt-suggestion) as ghost text after a turn. On unless set to `false` |
+| `ambient_thinking_phrase` | Whether the TUI predicts a [task-specific spinner phrase](/usage/tui#spinner-thinking-phrase) while you type. On unless set to `false` |
 | `channel` | Release channel `ante update` tracks (`stable` or `nightly`). Defaults to `stable`; legacy `latest` values are treated as `stable`. See [Update & Channels](/start/update). |
 | `status_line` | Items to display in the TUI status line footer (see below) |
 | `status_line_command` | Shell command that renders a fully custom status line (see below). Takes precedence over `status_line` while set |

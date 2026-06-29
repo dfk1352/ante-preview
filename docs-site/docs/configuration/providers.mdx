@@ -35,7 +35,7 @@ When using third-party providers, make sure the model supports tool use (functio
 
 ## Custom catalog
 
-Create `~/.ante/catalog.json` to add a provider Ante doesn't ship, override a built-in one, or tweak a model's defaults. It is merged on top of the built-in presets at startup, so you only specify what you want to add or change. The examples below are the common cases; see the [Catalog Reference](/reference/catalog-reference#catalogjson-schema) for the full schema, authentication forms, and resolution rules.
+Create `~/.ante/catalog.json` to add a provider Ante doesn't ship, patch a built-in one, or tweak a model's defaults. It is merged on top of the built-in presets at startup, so you only specify what you want to add or change. The examples below are the common cases; see the [Catalog Reference](/reference/catalog-reference#catalogjson-schema) for the full schema, authentication forms, and resolution rules.
 
 ### Add a hosted provider
 
@@ -88,6 +88,23 @@ Omit `auth` for a provider that needs no key, and leave `preferred_models` off w
 
 ```bash
 ante --provider ollama --model qwen2.5-coder:7b
+```
+
+### Patch a built-in provider
+
+When the key matches a built-in provider, only the fields you set are changed.
+Set optional fields such as `auth` or `http_headers` to `null` to clear the
+preset value:
+
+```json
+{
+  "providers": {
+    "openai": {
+      "base_url": "http://localhost:8080/v1",
+      "auth": null
+    }
+  }
+}
 ```
 
 ### Override model defaults

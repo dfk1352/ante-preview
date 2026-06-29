@@ -39,8 +39,8 @@ Without `--prompt`, Ante starts the interactive TUI. With `--prompt`, Ante runs 
 | `--append-system-prompt <TEXT>` | Append content to the default system prompt. |
 | `--enable-auto-memory` | Enable auto-memory for this run. Conflicts with `--disable-auto-memory`. |
 | `--disable-auto-memory` | Disable auto-memory for this run. Conflicts with `--enable-auto-memory`. |
-| `--allowed-tools <TOOLS>...` | Only allow these tools. Values are space-separated. |
-| `--disallowed-tools <TOOLS>...` | Remove these tools from the session. Values are space-separated. |
+| `--include-tools <TOOLS>...` | Only allow these tools. Values are space-separated. (`--allowed-tools` and `--tools` are accepted as aliases.) |
+| `--exclude-tools <TOOLS>...` | Remove these tools from the session. Values are space-separated. (`--disallowed-tools` is accepted as an alias.) |
 | `--output-format <FORMAT>` | Headless output format: `json`, `human`, or `minimal`. Defaults to `minimal`. |
 | `-p`, `--prompt <PROMPT>` | Prompt to run in headless mode. Also supports stdin when piped. |
 | `--check` | Run a verification pass after the headless task completes. |
@@ -77,7 +77,7 @@ Server mode exposes the Ante protocol over stdin/stdout by default, or over WebS
 | `-h`, `--help` | Print command help. |
 
 :::note
-`serve` is session-agnostic, so it does not accept the session flags (`--model`, `--provider`, `--yolo`, `--system-prompt`, `--allowed-tools`, …). The connecting client configures those per session over the protocol.
+`serve` is session-agnostic, so it does not accept the session flags (`--model`, `--provider`, `--yolo`, `--system-prompt`, `--include-tools`, …). The connecting client configures those per session over the protocol.
 :::
 
 ### Examples

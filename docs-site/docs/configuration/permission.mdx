@@ -155,13 +155,13 @@ Malformed permission rules are skipped individually with a warning. Valid siblin
 
 ```bash
 # Only allow these tools (whitelist)
-ante --allowed-tools Read Glob Grep "analyze the code"
+ante --include-tools Read Glob Grep "analyze the code"
 
 # Remove these tools (blacklist)
-ante --disallowed-tools Bash Write "read-only analysis"
+ante --exclude-tools Bash Write "read-only analysis"
 
 # Fine-grained: allow Bash only for specific commands
-ante --allowed-tools Read "Bash(cargo test *)" "Bash(cargo clippy *)" "analyze and test"
+ante --include-tools Read "Bash(cargo test *)" "Bash(cargo clippy *)" "analyze and test"
 ```
 
 :::tip
@@ -172,4 +172,4 @@ Tool filtering and permissions are independent. Filtering controls what tools **
 
 In **TUI mode**, tools that require approval show an interactive prompt. You can approve or deny each call, grant it for the rest of the session, or save an "always allow" rule (see [Session grants](#session-grants)).
 
-In **headless mode**, `yolo` mode is implied. Use `--allowed-tools` or `--disallowed-tools` to restrict what the agent can do.
+In **headless mode**, `yolo` mode is implied. Use `--include-tools` or `--exclude-tools` to restrict what the agent can do.

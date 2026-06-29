@@ -51,8 +51,8 @@ ante [OPTIONS] [--prompt <PROMPT>]
 | `--output-format <FORMAT>` | Output format: `json`, `human`, `minimal` (default: `minimal`) |
 | `--system-prompt <PROMPT>` | Replace the default system prompt entirely |
 | `--append-system-prompt <TEXT>` | Append text to the system prompt |
-| `--allowed-tools <TOOLS>...` | Only allow these tools (space-separated) |
-| `--disallowed-tools <TOOLS>...` | Disallow these tools (space-separated) |
+| `--include-tools <TOOLS>...` | Only allow these tools (space-separated). Alias: `--allowed-tools` |
+| `--exclude-tools <TOOLS>...` | Disallow these tools (space-separated). Alias: `--disallowed-tools` |
 | `-r`, `--resume <SESSION_ID>` | Resume a previously saved session by its ID |
 | `--check` | Run a verification pass after the main task completes |
 | `--simple-agent` | Simple agent mode — uses a minimal system prompt with `PTY`, `ViewImage`, and `WebSearch` tools |
@@ -105,7 +105,7 @@ The `--simple-agent` flag starts Ante with a minimal system prompt and a reduced
 ante --simple-agent -p "take a screenshot and describe what you see"
 ```
 
-If you also pass `--system-prompt` or `--allowed-tools`, those take precedence over the simple-agent defaults.
+If you also pass `--system-prompt` or `--include-tools`, those take precedence over the simple-agent defaults.
 
 ## Context enrichment
 
@@ -147,7 +147,7 @@ ante --model claude-sonnet-4-6 --check \
 
 ```bash
 # Read-only analysis — no file writes or shell access
-ante --allowed-tools Read Glob Grep \
+ante --include-tools Read Glob Grep \
   -p "analyze the codebase architecture and summarize it"
 ```
 

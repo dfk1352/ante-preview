@@ -98,8 +98,8 @@ You can also resume from the CLI with `ante --resume <SESSION_ID>` (or `-r`) in 
 | `Enter` | Send message (or run a shell command in [bash mode](#bash-mode) if the line starts with `!`) |
 | `Ctrl+Enter` / `Alt+Enter` / `Shift+Enter` | Insert newline |
 | `Up` / `Down` | Move cursor, then navigate history |
-| `Tab` | Complete command or file path suggestion |
-| `Shift+Tab` | Cycle permission mode: `strict` → `auto` → `yolo` |
+| `Tab` | Complete a command or file path; on empty input, accept the [next-prompt suggestion](#next-prompt-suggestion) |
+| `Shift+Tab` | Cycle permission mode: `strict` → `auto` → `yolo`. Takes effect immediately, including on a turn already running |
 | `Ctrl+R` | Start reverse-i-search through prompt history |
 | `Ctrl+C` | Interrupt the active turn; press twice in a row to exit (or use `/exit`, `exit`, `quit`) |
 | `Ctrl+S` | Steer queued messages into the running turn |
@@ -189,6 +189,16 @@ The command runs in your own login shell (`$SHELL -lc`, falling back to `/bin/sh
 Bash mode runs locally and is never gated by the permission system — typing `!` is the authorization. This is separate from the agent's own `Bash` tool, which still goes through tool approval. A bare `!` with nothing after it is sent as a normal message. Interactive programs (editors, pagers) won't work, since bash mode has no terminal input.
 :::
 
+## Next-prompt suggestion
+
+When a turn ends and the composer is empty, Ante predicts a likely follow-up and shows it as dim ghost text. Press `Tab` to accept it — the suggestion fills the input so you can edit it before sending. Any keystroke other than `Tab` dismisses it.
+
+The prediction is generated off the critical path on the cheapest available model, so it never slows down your turn and silently does nothing if it can't produce one in time. It is on by default; set `"ambient_prompt_suggestion": false` in `~/.ante/settings.json` to turn it off.
+
+## Spinner thinking phrase
+
+While you type a longer prompt, Ante predicts a short, task-specific phrase and uses it as the spinner label for that turn instead of the generic rotating messages. Like the next-prompt suggestion, it runs best-effort on the cheapest model off the critical path, and alarming or destructive words are filtered out of the phrase. On by default; disable with `"ambient_thinking_phrase": false` in `~/.ante/settings.json`.
+
 ## CLI flags for TUI mode
 
 ```bash
@@ -196,8 +206,8 @@ ante --model claude-sonnet-4-6
 ante --provider openai
 ante --system-prompt "You are a Python expert"
 ante --append-system-prompt "Always use type hints"
-ante --allowed-tools Read Grep Glob
-ante --disallowed-tools Bash Write
+ante --include-tools Read Grep Glob
+ante --exclude-tools Bash Write
 ante --yolo                       # skip all tool approvals
 ante --resume ses_01ARZ3NDEK...   # resume a previous session
 ```

@@ -66,10 +66,11 @@ Initialize a new session with model, provider, and configuration.
       "permission_mode": null,
       "system_prompt": null,
       "append_system_prompt": null,
-      "allowed_tools": null,
-      "disallowed_tools": null,
+      "include_tools": null,
+      "exclude_tools": null,
       "cwd": null,
-      "thinking": null
+      "thinking": null,
+      "enable_auto_memory": null
     }
   },
   "id": "op_..."
@@ -85,14 +86,15 @@ Initialize a new session with model, provider, and configuration.
 | `permission_mode` | `PermissionMode?` | Tool approval mode: `"strict"`, `"auto"`, or `"yolo"`. `null` uses `strict` |
 | `system_prompt` | `string?` | Override the default system prompt entirely |
 | `append_system_prompt` | `string?` | Append content to the default system prompt |
-| `allowed_tools` | `string[]?` | Whitelist — only these tools are available |
-| `disallowed_tools` | `string[]?` | Blacklist — these tools are removed |
+| `include_tools` | `string[]?` | Whitelist — only these tools are available. Also gates dynamically registered (MCP) tools |
+| `exclude_tools` | `string[]?` | Blacklist — these tools are removed |
 | `cwd` | `string?` | Working directory. Defaults to daemon's process directory |
 | `thinking` | `Thinking?` | Thinking level override: `"Disabled"`, `"Enabled"`, `"Deep"`, or `"Max"` |
+| `enable_auto_memory` | `bool?` | Whether the agent records and recalls [auto-memory](/extend/memory). `null` leaves the daemon default (on for interactive sessions) |
 
 ### UpdateSession
 
-Update the active session without restarting it (e.g. switch models or permission mode mid-session). Each field is optional; an absent field is left unchanged. Both apply on the next turn without disturbing an in-flight one — the permission mode change is what `Shift+Tab` cycling sends from the TUI. Other session options must be set at `StartSession` time.
+Update the active session without restarting it (e.g. switch models or permission mode mid-session). Each field is optional; an absent field is left unchanged. A permission-mode change — what `Shift+Tab` cycling sends from the TUI — takes effect immediately, applying to the turn already in flight as well as later ones; a model change applies on the next turn. Other session options must be set at `StartSession` time.
 
 ```json
 {

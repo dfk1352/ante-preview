@@ -21,7 +21,7 @@ As the agent works on your project, it:
 
 ### MEMORY.md
 
-The main memory file. Its first 200 lines are included in the system prompt. Keep it concise — link to separate topic files for details.
+The main memory file. It is injected into the system prompt up to a cap of 200 lines or 25 KB, whichever comes first (a truncation note is appended when it overflows). Keep it concise — link to separate topic files for details.
 
 ```markdown
 # Project patterns

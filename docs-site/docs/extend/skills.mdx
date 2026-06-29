@@ -55,6 +55,11 @@ See [checklist](references/checklist.md) for the full review checklist.
 The `allowed-tools` field also accepts a comma-separated string (`"Read, Glob, Grep"`) or a space-separated string (`"Read Glob Grep"`) in addition to the YAML array format.
 :::
 
+Frontmatter parsing is lenient for common scalar mistakes: unquoted values that
+contain `: `, begin with flow-like characters such as `[` or `{`, or include
+inline comments are repaired when they can be interpreted unambiguously.
+Malformed nested YAML still fails so broken metadata does not load silently.
+
 ## Skill directories
 
 | Directory | Scope |

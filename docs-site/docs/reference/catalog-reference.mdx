@@ -54,7 +54,6 @@ ante --provider anthropic --model claude-sonnet-4-6
 | `gpt-5.5` | Latest flagship GPT model |
 | `gpt-5.5-pro` | Highest reliability on complex problems |
 | `gpt-5.4` | GPT-5.4 model |
-| `gpt-5.4-pro` | Highest reliability on complex problems |
 | `gpt-5.3-codex` | Frontier coding model |
 | `gpt-5-mini` | Faster, cheaper GPT-5 model |
 | `gpt-5-nano` | Smallest GPT-5 model |
@@ -63,7 +62,7 @@ ante --provider anthropic --model claude-sonnet-4-6
 ante --provider openai --model gpt-5.5
 ```
 
-The `openai-subscription` provider (ChatGPT/Codex OAuth) serves only `gpt-5.5` — the other GPT-5 ids aren't available on ChatGPT accounts.
+The `openai-subscription` provider (ChatGPT/Codex OAuth) serves a smaller set — `gpt-5.5`, `gpt-5.4`, and `gpt-5.4-mini` — since the other GPT-5 ids aren't available on ChatGPT accounts.
 
 #### OpenAI transports
 
@@ -245,7 +244,7 @@ ante --provider local
 }
 ```
 
-A `providers` entry whose key matches a built-in (e.g. `openai`) replaces that preset; a new key adds a provider. The map key is the id you pass to `--provider`, so keep each entry's `id` equal to its key.
+A `providers` entry whose key matches a built-in (e.g. `openai`) patches that preset field by field; a new key adds a provider. The map key is the id you pass to `--provider`, so keep each entry's `id` equal to its key.
 
 :::note
 `~/.ante` can be relocated with the `ANTE_HOME` environment variable; the catalog is always `$ANTE_HOME/catalog.json`.
@@ -256,13 +255,13 @@ A `providers` entry whose key matches a built-in (e.g. `openai`) replaces that p
 | Field | Required | Description |
 |---|---|---|
 | `id` | ✅ | Provider id. Must match the map key (`name` is accepted as a legacy alias). This is what you pass to `--provider`. |
-| `display_name` | ✅ | Friendly name shown in the TUI. |
-| `base_url` | ✅ | API base URL. |
-| `wire_style` | ✅ | API dialect Ante speaks — `AnthropicMessage`, `OpenAiCompatible`, `OpenAiResponse`, or `Gemini`. |
+| `display_name` | New providers: optional | Friendly name shown in the TUI. New providers default to the provider id when omitted. |
+| `base_url` | New providers: ✅ | API base URL. |
+| `wire_style` | New providers: ✅ | API dialect Ante speaks — `AnthropicMessage`, `OpenAiCompatible`, `OpenAiResponse`, or `Gemini`. |
 | `auth` | — | How to authenticate (see [Authentication](#authentication)). Omit for a provider that needs no key. |
 | `http_headers` | — | Extra headers sent with every request, as a string→string map. |
-| `supports_web_search` | — | Whether the provider exposes a native web-search affordance. Gates whether the `WebSearch` tool works on a session using this provider (defaults to `false`). |
-| `preferred_models` | — | Models shown for this provider in the picker and used as provider defaults (see [Model fields](#model-fields)). An empty or omitted list means the provider has no picker/default model of its own. |
+| `supports_web_search` | — | Whether the provider exposes a native web-search affordance. When `true`, the `WebSearch` tool is added to sessions on this provider automatically; when `false` (the default), `WebSearch` is not offered. |
+| `preferred_models` | — | Models shown for this provider in the picker and used as provider defaults (see [Model fields](#model-fields)). For built-in provider overlays, matching model ids are patched and new ids are appended; omitted leaves the preset list unchanged. |
 
 ```json
 {
@@ -283,6 +282,22 @@ A `providers` entry whose key matches a built-in (e.g. `openai`) replaces that p
           "thinking": "Enabled"
         }
       ]
+    }
+  }
+}
+```
+
+For built-in providers, include only the fields you want to change. Optional
+fields with `null` clear the preset value, which is useful when repointing a
+provider at a local proxy that should not send the built-in auth or headers:
+
+```json
+{
+  "providers": {
+    "openai": {
+      "base_url": "http://localhost:8080/v1",
+      "auth": null,
+      "http_headers": null
     }
   }
 }

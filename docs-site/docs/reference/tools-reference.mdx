@@ -49,11 +49,11 @@ Fetch a URL, convert it to markdown, and have a small model extract what's relev
 
 ### WebSearch
 
-Search the web and return results with citations. Requires approval. Not in the default tool set — enable with `--allowed-tools`. Uses the provider's native web search, so it only works on a provider that advertises `supports_web_search` (Anthropic, OpenAI, Gemini, Grok, OpenRouter, Antix, and Ali Coding Plan); on other providers the call returns an error.
+Search the web and return results with citations. Requires approval. Uses the provider's native web search, so it is available only on a provider that advertises `supports_web_search` (Anthropic, OpenAI, Gemini, Grok, OpenRouter, Antix, and Ali Coding Plan). On those providers it is added to the tool set automatically; on others it is not offered.
 
 ## Opt-in tools
 
-These are not enabled by default. Turn them on with `--allowed-tools`, or use `--simple-agent` for an agent set (`PTY`, `ViewImage`, `WebSearch`) tuned around interactive terminal work.
+These are not enabled by default. Turn them on with `--include-tools`, or use `--simple-agent` for an agent set (`PTY`, `ViewImage`, `WebSearch`) tuned around interactive terminal work.
 
 ### ViewImage
 
@@ -69,13 +69,13 @@ Drive a Chromium browser for navigation, content extraction, and automation. The
 
 ## MCP tools
 
-Tools provided by configured [MCP servers](/extend/mcp) are exposed to the agent as `mcp__<server>__<tool>`. They appear alongside built-in tools and behave identically from the agent's perspective. MCP tools are registered after `--allowed-tools` filtering so they are not stripped by a restrictive built-in allowlist.
+Tools provided by configured [MCP servers](/extend/mcp) are exposed to the agent as `mcp__<server>__<tool>`. They appear alongside built-in tools and behave identically from the agent's perspective. MCP tools obey the same `--include-tools`/`--exclude-tools` filtering as built-in tools, so a restrictive include list that doesn't name them will strip them; filter per server with `enabled_tools` instead.
 
 ## Default tool set
 
-By default Ante enables `Read`, `Bash`, `Grep`, `Glob`, `TodoWrite`, `WebFetch`, `Edit`, `Write`, and `Agent`. `Browser` is also included when Ante is built with the `browser` feature.
+By default Ante enables `Read`, `Bash`, `Grep`, `Glob`, `TodoWrite`, `WebFetch`, `Edit`, `Write`, and `Agent`. `Browser` is also included when Ante is built with the `browser` feature. `WebSearch` is added automatically when the session's provider supports native web search.
 
-`WebSearch`, `ViewImage`, and `PTY` are opt-in.
+`ViewImage` and `PTY` are opt-in.
 
 ## Tool filtering
 
@@ -83,15 +83,15 @@ Control which tools are available in a session:
 
 ```bash
 # Only allow these tools
-ante --allowed-tools Read Glob Grep "analyze the code"
+ante --include-tools Read Glob Grep "analyze the code"
 
 # Remove these tools
-ante --disallowed-tools Bash Write "read-only analysis"
+ante --exclude-tools Bash Write "read-only analysis"
 ```
 
 Supports ToolMatcher syntax for fine-grained control:
 
 ```bash
 # Allow Bash but only for specific patterns
-ante --allowed-tools "Read" "Bash(cargo test)" "Bash(cargo clippy)"
+ante --include-tools "Read" "Bash(cargo test)" "Bash(cargo clippy)"
 ```

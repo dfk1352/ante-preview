@@ -119,7 +119,7 @@ pub trait Tool: Send + Sync {
 | `Agent` | Builtin | No | Spawn sub-agent for complex tasks |
 | `TodoWrite` | Builtin | No | Manage task lists |
 | `WebFetch` | Builtin | Yes | Fetch and process web content |
-| `WebSearch` | Builtin | Yes | Search the web (opt-in) |
+| `WebSearch` | Builtin | Yes | Search the web (auto-enabled on web-search-capable providers) |
 | `ViewImage` | Builtin | No | Read and analyze images (opt-in) |
 | `Browser` | Web | Yes | Drive Chromium via CDP (requires `browser` cargo feature) |
 
@@ -127,10 +127,11 @@ pub trait Tool: Send + Sync {
 
 Tools can be filtered at session level:
 
-- **Allowed list** (`--allowed-tools`) — Only these tools are available
-- **Disallowed list** (`--disallowed-tools`) — These tools are removed
+- **Include list** (`--include-tools`) — Only these tools are available
+- **Exclude list** (`--exclude-tools`) — These tools are removed
 - Supports ToolMatcher syntax: `Bash(ls -la)`, `Agent(explore)`
 - Names are matched case-insensitively
+- The same selection gates dynamically registered tools (MCP servers), so they cannot bypass the filter
 
 ## Session lifecycle
 
