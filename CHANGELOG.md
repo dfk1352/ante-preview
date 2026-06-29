@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.preview.46 - 2026-06-28
+
+- Predict a short, task-specific spinner phrase while you type a longer prompt and show it as the spinner label for that turn (best-effort, runs on the cheapest model, off the critical path)
+- Suggest a likely next prompt as dim ghost text after a turn ends, acceptable with Tab
+- Keep destructive or alarming words out of the predicted spinner phrase
+- Apply a permission-mode change (Shift+Tab) to the in-flight turn, so switching to Auto mid-turn takes effect immediately instead of on the next turn
+- Make MCP and dynamically registered tools obey tool filtering, fixing a bypass where they ignored `--allowed-tools`/`--disallowed-tools`; rename the flags to `--include-tools`/`--exclude-tools` with the old names kept as hidden aliases
+- Send native web search to the model by default on web-search-capable providers
+- Add `gpt-5.4` and `gpt-5.4-mini` to the OpenAI subscription models
+- Apply `~/.ante/catalog.json` as partial provider overlays, patching existing providers field-by-field instead of overwriting them
+- Make skill frontmatter parsing lenient, recovering from common unquoted colons in `description:` values
+
 ## v0.preview.45 - 2026-06-25
 
 - Add MiMo models via OpenRouter
